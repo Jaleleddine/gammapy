@@ -289,19 +289,6 @@ def test_analysis_ring_3d():
         analysis.get_datasets()
 
 
-#
-#
-# test_analysis_no_background
-# l 295 in test_analysis.py
-# add test for caplog in line 308
-#
-# "
-# analysis/core.py 345
-# tested
-#
-# ->suggest to split test_analysis_no_bkg() into test_analysis_no_bkg_1d() and test_analysis_no_bkg_3d()
-# test caplog.records in both.
-# "
 
 @requires_data()
 def test_analysis_no_bkg_1d(caplog):
