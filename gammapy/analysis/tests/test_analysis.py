@@ -290,19 +290,28 @@ def test_analysis_ring_3d():
 
 
 @requires_data()
-def test_analysis_no_bkg():
+def test_analysis_ring_3d():
+    config = get_example_config("3d")
+    config.datasets.background.method = "ring"
+    config.datasets.background.parameters = {"r_in": "0.7 deg", "width": "0.7 deg"}
+    analysis = Analysis(config)
+    analysis.get_observations()
+    with pytest.raises(ValueError):
+        analysis.get_datasets()
+
+
+
+@requires_data()
+def test_analysis_no_bkg_1d(caplog):
     config = get_example_config("1d")
     analysis = Analysis(config)
     analysis.get_observations()
     analysis.get_datasets()
     assert isinstance(analysis.datasets[0], SpectrumDatasetOnOff) is False
+    assert caplog.records[-1].levelname == "WARNING"
+    assert caplog.records[-1].message == "No background maker set for 1d analysis. Check configuration."
 
-    config = get_example_config("3d")
-    config.datasets.background.method = None
-    analysis = Analysis(config)
-    analysis.get_observations()
-    analysis.get_datasets()
-    assert isinstance(analysis.datasets[0], MapDataset) is True
+
 
 
 @requires_dependency("iminuit")
